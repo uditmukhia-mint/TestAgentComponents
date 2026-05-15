@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Component Showcase</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:          #f5f4f0;
+      --surface:     #ffffff;
+      --surface2:    #f0efe9;
+      --border:      #e0dfd8;
+      --text:        #1a1916;
+      --muted:       #706f6a;
+      --accent:      #2a5cff;
+      --accent-bg:   #e8edff;
+      --success:     #1a7a4a;
+      --success-bg:  #e4f5ec;
+      --warn:        #a05a00;
+      --warn-bg:     #fff4e0;
+      --danger:      #c0392b;
+      --danger-bg:   #fdecea;
+      --radius:      10px;
+      --radius-lg:   16px;
+      --shadow:      0 1px 4px rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.05);
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 2rem 1rem;
+      min-height: 100vh;
+    }
+
+    /* ── Layout ── */
+    .page-header {
+      max-width: 860px;
+      margin: 0 auto 3rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1.5rem;
+    }
+    .page-header h1 {
+      font-size: 2rem;
+      font-weight: 600;
+      letter-spacing: -0.5px;
+    }
+    .page-header p {
+      color: var(--muted);
+      margin-top: 0.4rem;
+      font-size: 0.95rem;
+    }
+    .badge-env {
+      display: inline-block;
+      background: var(--accent-bg);
+      color: var(--accent);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 999px;
+      margin-bottom: 0.75rem;
+    }
+
+    .main { max-width: 860px; margin: 0 auto; display: flex; flex-direction: column; gap: 3rem; }
+
+    /* ── Section ── */
+    .section-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+
+    /* ── Card container ── */
+    .card {
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      padding: 1.5rem;
+    }
+    .card-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .card-title::before {
+      content: '';
+      display: inline-block;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    /* ════════════════════════════════
+       COMPONENTS — Edit / replace these
+       ════════════════════════════════ */
+
+    /* 1. BUTTONS */
+    .btn-group { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 18px;
+      border-radius: var(--radius);
+      font-family: inherit; font-size: 0.9rem; font-weight: 500;
+      border: 1.5px solid transparent;
+      cursor: pointer; transition: all 0.15s;
+    }
+    .btn:hover { filter: brightness(0.93); transform: translateY(-1px); }
+    .btn:active { transform: scale(0.97); }
+    .btn-primary  { background: var(--accent);   color: #fff; }
+    .btn-outline  { background: transparent; color: var(--text); border-color: var(--border); }
+    .btn-ghost    { background: transparent; color: var(--muted); }
+    .btn-danger   { background: var(--danger);  color: #fff; }
+    .btn-sm       { padding: 5px 12px; font-size: 0.8rem; }
+    .btn-lg       { padding: 12px 28px; font-size: 1rem; }
+
+    /* 2. BADGES */
+    .badge-row    { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 3px 10px; border-radius: 999px;
+      font-size: 0.78rem; font-weight: 600;
+    }
+    .badge-blue    { background: var(--accent-bg);  color: var(--accent);  }
+    .badge-green   { background: var(--success-bg); color: var(--success); }
+    .badge-amber   { background: var(--warn-bg);    color: var(--warn);    }
+    .badge-red     { background: var(--danger-bg);  color: var(--danger);  }
+    .badge-neutral { background: var(--surface2);   color: var(--muted);   }
+    .badge-dot::before {
+      content: ''; display: inline-block;
+      width: 6px; height: 6px; border-radius: 50%;
+      background: currentColor;
+    }
+
+    /* 3. FORM INPUTS */
+    .form-group    { display: flex; flex-direction: column; gap: 6px; }
+    .form-label    { font-size: 0.85rem; font-weight: 500; }
+    .form-hint     { font-size: 0.78rem; color: var(--muted); }
+    .form-row      { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    input[type="text"], input[type="email"], select, textarea {
+      width: 100%; padding: 9px 12px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      font-family: inherit; font-size: 0.9rem; color: var(--text);
+      background: var(--surface); outline: none;
+      transition: border-color 0.15s;
+    }
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(42,92,255,0.12);
+    }
+    textarea { resize: vertical; min-height: 80px; }
+    .input-error { border-color: var(--danger) !important; }
+    .error-msg { font-size: 0.78rem; color: var(--danger); margin-top: 4px; }
+
+    /* 4. ALERT / CALLOUT */
+    .alert {
+      display: flex; gap: 12px; align-items: flex-start;
+      padding: 14px 16px; border-radius: var(--radius);
+      font-size: 0.88rem; line-height: 1.5;
+    }
+    .alert-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+    .alert-info    { background: var(--accent-bg);  color: #1e3a8a; }
+    .alert-success { background: var(--success-bg); color: #144d30; }
+    .alert-warn    { background: var(--warn-bg);    color: #7c4508; }
+    .alert-danger  { background: var(--danger-bg);  color: #8b1a1a; }
+
+    /* 5. CARD GRID */
+    .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+    .stat-card {
+      background: var(--surface2);
+      border-radius: var(--radius);
+      padding: 1rem 1.1rem;
+    }
+    .stat-label { font-size: 0.78rem; color: var(--muted); font-weight: 500; margin-bottom: 4px; }
+    .stat-value { font-size: 1.6rem; font-weight: 600; letter-spacing: -0.5px; }
+    .stat-delta { font-size: 0.78rem; margin-top: 4px; }
+    .delta-up   { color: var(--success); }
+    .delta-down { color: var(--danger);  }
+
+    /* 6. CODE SNIPPET */
+    .code-block {
+      background: #1e1e2e; color: #cdd6f4;
+      border-radius: var(--radius);
+      padding: 1rem 1.2rem;
+      font-family: 'DM Mono', monospace; font-size: 0.82rem;
+      line-height: 1.7; overflow-x: auto;
+    }
+    .code-block .k { color: #cba6f7; } /* keyword */
+    .code-block .s { color: #a6e3a1; } /* string  */
+    .code-block .c { color: #6c7086; } /* comment */
+    .code-block .n { color: #89dceb; } /* name    */
+
+    /* 7. AVATAR ROW */
+    .avatar-row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+    .avatar {
+      width: 44px; height: 44px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 600; font-size: 0.85rem; flex-shrink: 0;
+      border: 2px solid var(--surface);
+    }
+    .avatar-sm { width: 30px; height: 30px; font-size: 0.7rem; }
+    .avatar-lg { width: 60px; height: 60px; font-size: 1.1rem; }
+    .av-a { background: #c7d2fe; color: #3730a3; }
+    .av-b { background: #bbf7d0; color: #14532d; }
+    .av-c { background: #fde68a; color: #78350f; }
+    .av-d { background: #fecdd3; color: #881337; }
+    .av-e { background: #a5f3fc; color: #164e63; }
+    .avatar-stack { display: flex; }
+    .avatar-stack .avatar { margin-left: -10px; }
+    .avatar-stack .avatar:first-child { margin-left: 0; }
+
+    /* 8. TOGGLE / SWITCH */
+    .toggle-row { display: flex; flex-direction: column; gap: 14px; }
+    .toggle-item { display: flex; align-items: center; justify-content: space-between; }
+    .toggle-label { font-size: 0.9rem; }
+    .toggle-sub   { font-size: 0.78rem; color: var(--muted); }
+    .switch { position: relative; display: inline-block; width: 42px; height: 24px; }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider-track {
+      position: absolute; inset: 0;
+      background: var(--border); border-radius: 999px; cursor: pointer; transition: 0.2s;
+    }
+    .slider-track::after {
+      content: ''; position: absolute;
+      width: 18px; height: 18px; border-radius: 50%;
+      background: white; top: 3px; left: 3px; transition: 0.2s;
+    }
+    .switch input:checked + .slider-track { background: var(--accent); }
+    .switch input:checked + .slider-track::after { transform: translateX(18px); }
+
+    /* 9. PROGRESS BAR */
+    .progress-list { display: flex; flex-direction: column; gap: 14px; }
+    .progress-item-label {
+      display: flex; justify-content: space-between;
+      font-size: 0.84rem; margin-bottom: 5px;
+    }
+    .progress-track {
+      height: 8px; background: var(--surface2);
+      border-radius: 999px; overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%; border-radius: 999px;
+      background: var(--accent); transition: width 0.4s ease;
+    }
+    .progress-fill.green  { background: var(--success); }
+    .progress-fill.amber  { background: #d97706; }
+    .progress-fill.red    { background: var(--danger); }
+
+    /* 10. TABLE */
+    .table-wrap { overflow-x: auto; border-radius: var(--radius); border: 1px solid var(--border); }
+    table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+    thead { background: var(--surface2); }
+    th { padding: 10px 14px; text-align: left; font-size: 0.78rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); }
+    td { padding: 11px 14px; border-top: 1px solid var(--border); }
+    tbody tr:hover { background: var(--surface2); }
+    .status-dot {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 0.82rem; font-weight: 500;
+    }
+    .dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+    .dot-green { background: var(--success); }
+    .dot-amber { background: #d97706; }
+    .dot-red   { background: var(--danger); }
+  </style>
+</head>
+<body>
+
+  <header class="page-header">
+    <span class="badge-env">Test Environment</span>
+    <h1>Component Showcase</h1>
+    <p>A sandbox page for previewing and testing UI components. Edit the HTML/CSS to add your own.</p>
+  </header>
+
+  <main class="main">
+
+    <!-- ① BUTTONS -->
+    <section>
+      <p class="section-label">Buttons</p>
+      <div class="card">
+        <p class="card-title">Variants</p>
+        <div class="btn-group">
+          <button class="btn btn-primary">Primary</button>
+          <button class="btn btn-outline">Outline</button>
+          <button class="btn btn-ghost">Ghost</button>
+          <button class="btn btn-danger">Danger</button>
+        </div>
+        <p class="card-title" style="margin-top:1.2rem">Sizes</p>
+        <div class="btn-group">
+          <button class="btn btn-primary btn-sm">Small</button>
+          <button class="btn btn-primary">Default</button>
+          <button class="btn btn-primary btn-lg">Large</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ② BADGES -->
+    <section>
+      <p class="section-label">Badges &amp; Labels</p>
+      <div class="card">
+        <div class="badge-row">
+          <span class="badge badge-blue badge-dot">In progress</span>
+          <span class="badge badge-green badge-dot">Active</span>
+          <span class="badge badge-amber badge-dot">Pending</span>
+          <span class="badge badge-red badge-dot">Failed</span>
+          <span class="badge badge-neutral">Draft</span>
+          <span class="badge badge-blue">v2.4.1</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ③ STAT CARDS -->
+    <section>
+      <p class="section-label">Stat Cards</p>
+      <div class="card">
+        <div class="cards-grid">
+          <div class="stat-card">
+            <p class="stat-label">Total Users</p>
+            <p class="stat-value">14,280</p>
+            <p class="stat-delta delta-up">↑ 12% vs last month</p>
+          </div>
+          <div class="stat-card">
+            <p class="stat-label">Revenue</p>
+            <p class="stat-value">£82,400</p>
+            <p class="stat-delta delta-up">↑ 7.4% vs last month</p>
+          </div>
+          <div class="stat-card">
+            <p class="stat-label">Churn Rate</p>
+            <p class="stat-value">2.1%</p>
+            <p class="stat-delta delta-down">↓ 0.3pp — good</p>
+          </div>
+          <div class="stat-card">
+            <p class="stat-label">Avg Session</p>
+            <p class="stat-value">4m 22s</p>
+            <p class="stat-delta" style="color:var(--muted)">No change</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ④ FORM INPUTS -->
+    <section>
+      <p class="section-label">Form Inputs</p>
+      <div class="card">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">First name</label>
+            <input type="text" placeholder="Jane" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Last name</label>
+            <input type="text" placeholder="Doe" />
+          </div>
+        </div>
+        <div class="form-group" style="margin-top:1rem">
+          <label class="form-label">Email address</label>
+          <input type="email" class="input-error" value="not-an-email" />
+          <p class="error-msg">Please enter a valid email address.</p>
+        </div>
+        <div class="form-group" style="margin-top:1rem">
+          <label class="form-label">Role</label>
+          <select>
+            <option>Designer</option>
+            <option>Engineer</option>
+            <option>Product Manager</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin-top:1rem">
+          <label class="form-label">Notes <span class="form-hint">(optional)</span></label>
+          <textarea placeholder="Add any relevant context…"></textarea>
+        </div>
+        <div style="margin-top:1.2rem">
+          <button class="btn btn-primary">Submit</button>
+          <button class="btn btn-outline" style="margin-left:8px">Cancel</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ⑤ ALERTS -->
+    <section>
+      <p class="section-label">Alerts &amp; Callouts</p>
+      <div class="card" style="display:flex;flex-direction:column;gap:10px">
+        <div class="alert alert-info">
+          <span class="alert-icon">ℹ️</span>
+          <span><strong>Heads up:</strong> Your trial ends in 5 days. Upgrade to keep your data.</span>
+        </div>
+        <div class="alert alert-success">
+          <span class="alert-icon">✅</span>
+          <span><strong>Deployed successfully.</strong> Changes are live on production.</span>
+        </div>
+        <div class="alert alert-warn">
+          <span class="alert-icon">⚠️</span>
+          <span><strong>High memory usage detected.</strong> Consider scaling your instance.</span>
+        </div>
+        <div class="alert alert-danger">
+          <span class="alert-icon">🚨</span>
+          <span><strong>Payment failed.</strong> Update your billing details to avoid interruption.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ⑥ PROGRESS BARS -->
+    <section>
+      <p class="section-label">Progress Bars</p>
+      <div class="card">
+        <div class="progress-list">
+          <div>
+            <div class="progress-item-label"><span>Design</span><span>90%</span></div>
+            <div class="progress-track"><div class="progress-fill" style="width:90%"></div></div>
+          </div>
+          <div>
+            <div class="progress-item-label"><span>Frontend</span><span>65%</span></div>
+            <div class="progress-track"><div class="progress-fill green" style="width:65%"></div></div>
+          </div>
+          <div>
+            <div class="progress-item-label"><span>Backend</span><span>38%</span></div>
+            <div class="progress-track"><div class="progress-fill amber" style="width:38%"></div></div>
+          </div>
+          <div>
+            <div class="progress-item-label"><span>Testing</span><span>12%</span></div>
+            <div class="progress-track"><div class="progress-fill red" style="width:12%"></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ⑦ AVATARS -->
+    <section>
+      <p class="section-label">Avatars</p>
+      <div class="card">
+        <p class="card-title">Sizes</p>
+        <div class="avatar-row">
+          <div class="avatar avatar-sm av-a">JD</div>
+          <div class="avatar av-b">MR</div>
+          <div class="avatar avatar-lg av-c">TS</div>
+        </div>
+        <p class="card-title" style="margin-top:1.2rem">Stacked group</p>
+        <div class="avatar-stack">
+          <div class="avatar av-a">JD</div>
+          <div class="avatar av-b">MR</div>
+          <div class="avatar av-c">TS</div>
+          <div class="avatar av-d">OP</div>
+          <div class="avatar av-e" style="background:#e0e7ff;color:#4338ca">+4</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ⑧ TOGGLES -->
+    <section>
+      <p class="section-label">Toggles &amp; Switches</p>
+      <div class="card">
+        <div class="toggle-row">
+          <div class="toggle-item">
+            <div>
+              <p class="toggle-label">Email notifications</p>
+              <p class="toggle-sub">Receive weekly digest emails</p>
+            </div>
+            <label class="switch"><input type="checkbox" checked /><span class="slider-track"></span></label>
+          </div>
+          <div class="toggle-item">
+            <div>
+              <p class="toggle-label">Dark mode</p>
+              <p class="toggle-sub">Switch to dark theme</p>
+            </div>
+            <label class="switch"><input type="checkbox" /><span class="slider-track"></span></label>
+          </div>
+          <div class="toggle-item">
+            <div>
+              <p class="toggle-label">Two-factor auth</p>
+              <p class="toggle-sub">Adds extra login security</p>
+            </div>
+            <label class="switch"><input type="checkbox" checked /><span class="slider-track"></span></label>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ⑨ CODE BLOCK -->
+    <section>
+      <p class="section-label">Code Snippet</p>
+      <div class="card">
+        <div class="code-block"><span class="c">// Fetch user data from API</span>
+<span class="k">async function</span> <span class="n">getUser</span>(id) {
+  <span class="k">const</span> res = <span class="k">await</span> fetch(<span class="s">`/api/users/${id}`</span>);
+  <span class="k">if</span> (!res.ok) <span class="k">throw new</span> Error(<span class="s">'User not found'</span>);
+  <span class="k">return</span> res.json();
+}</div>
+      </div>
+    </section>
+
+    <!-- ⑩ TABLE -->
+    <section>
+      <p class="section-label">Data Table</p>
+      <div class="card" style="padding:0">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Joined</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Jane Doe</td><td>Designer</td>
+                <td><span class="status-dot"><span class="dot dot-green"></span>Active</span></td>
+                <td>Jan 2024</td>
+              </tr>
+              <tr>
+                <td>Marcus Reid</td><td>Engineer</td>
+                <td><span class="status-dot"><span class="dot dot-green"></span>Active</span></td>
+                <td>Mar 2024</td>
+              </tr>
+              <tr>
+                <td>Priya Nair</td><td>PM</td>
+                <td><span class="status-dot"><span class="dot dot-amber"></span>On leave</span></td>
+                <td>Jun 2023</td>
+              </tr>
+              <tr>
+                <td>Tom Schulz</td><td>Engineer</td>
+                <td><span class="status-dot"><span class="dot dot-red"></span>Inactive</span></td>
+                <td>Sep 2022</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+</body>
+</html>
