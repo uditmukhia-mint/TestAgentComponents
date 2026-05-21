@@ -60,17 +60,27 @@
        Copy your deployment script here if you
        want a different deployment on this page
   ══════════════════════════════════════════ -->
-  <div id="agent-chat"
-       data-org-id="00DUE0000079FGj"
-       data-deployment="Test_Messaging"
-       data-site-url="https://mint-consulting--mintuat.sandbox.my.site.com"
-       data-scrt2-url="https://mint-consulting--mintuat.sandbox.my.salesforce-scrt.com"
-       data-bootstrap-url="https://mint-consulting--mintuat.sandbox.my.site.com/ESWTestMessaging1778851875468/assets/js/bootstrap.min.js"
-       data-heading="How can we help?"
-       data-placeholder="Type your question here..."
-       data-debug>
-  </div>
-  <script src="InlineEnhancedChat.js" data-target="agent-chat"></script>
+<div id="agent-chat"></div>
+
+<script src="InlineEnhancedChat.js"></script>
+<script>
+  try {
+    EnhancedChatInline.init({
+      containerId: 'agent-chat',
+      orgId: '00DUE0000079FGj',
+      deploymentApiName: 'Test_Messaging',
+      siteUrl: 'https://mint-consulting--mintuat.sandbox.my.site.com',
+      scrt2Url: 'https://mint-consulting--mintuat.sandbox.my.salesforce-scrt.com',
+      bootstrapScriptUrl: 'https://mint-consulting--mintuat.sandbox.my.site.com/ESWTestMessaging1778851875468/assets/js/bootstrap.min.js',
+      heading: 'How can we help?',
+      placeholder: 'Type your question here...',
+      debug: true
+    });
+    console.log('EnhancedChatInline.init called successfully');
+  } catch (err) {
+    console.error('Init failed:', err);
+  }
+</script>
 
 </body>
 </html>
