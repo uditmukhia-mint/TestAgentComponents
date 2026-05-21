@@ -11,34 +11,74 @@
       height: 100%;
       width: 100%;
       background-color: #131B24;
+      font-family: sans-serif;
+    }
+
+    .nav {
+      padding: 2.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .nav-heading {
+      color: #ffffff;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      opacity: 0.35;
+      margin-bottom: 0.25rem;
+    }
+
+    .nav-link {
+      display: inline-block;
+      color: #ffffff;
+      font-size: 1rem;
+      font-weight: 500;
+      text-decoration: none;
+      opacity: 0.75;
+      transition: opacity 0.15s;
+    }
+
+    .nav-link:hover {
+      opacity: 1;
+      text-decoration: underline;
     }
   </style>
 </head>
 <body>
 
+  <nav class="nav">
+    <p class="nav-heading">Test Pages</p>
+    <a class="nav-link" href="chat-test.html">→ Chat Widget Test</a>
+    <!-- To add more links, copy the line above and change the href and label -->
+  </nav>
+
   <!-- ══════════════════════════════════════════
        Salesforce Embedded Messaging
   ══════════════════════════════════════════ -->
-<script type='text/javascript'>
-	function initEmbeddedMessaging() {
-		try {
-			embeddedservice_bootstrap.settings.language = 'en_US'; // For example, enter 'en' or 'en-US'
-
-			embeddedservice_bootstrap.init(
-				'00DUE0000079FGj',
-				'Test_Messaging',
-				'https://mint-consulting--mintuat.sandbox.my.site.com/ESWTestMessaging1778851875468',
-				{
-					scrt2URL: 'https://mint-consulting--mintuat.sandbox.my.salesforce-scrt.com'
-				}
-			);
-		} catch (err) {
-			console.error('Error loading Embedded Messaging: ', err);
-		}
-	};
-</script>
-<script type='text/javascript' src='https://mint-consulting--mintuat.sandbox.my.site.com/ESWTestMessaging1778851875468/assets/js/bootstrap.min.js' onload='initEmbeddedMessaging()'></script>
-
+  <script type='text/javascript'>
+    function initEmbeddedMessaging() {
+      try {
+        embeddedservice_bootstrap.settings.language = 'en_US';
+        embeddedservice_bootstrap.init(
+          '00DUE0000079FGj',
+          'Test_Messaging',
+          'https://mint-consulting--mintuat.sandbox.my.site.com/ESWTestMessaging1778851875468',
+          {
+            scrt2URL: 'https://mint-consulting--mintuat.sandbox.my.salesforce-scrt.com'
+          }
+        );
+      } catch (err) {
+        console.error('Error loading Embedded Messaging: ', err);
+      }
+    };
+  </script>
+  <script type='text/javascript'
+    src='https://mint-consulting--mintuat.sandbox.my.site.com/ESWTestMessaging1778851875468/assets/js/bootstrap.min.js'
+    onload='initEmbeddedMessaging()'>
+  </script>
 
 </body>
 </html>
