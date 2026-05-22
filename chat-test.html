@@ -3,84 +3,184 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Chat Widget Test — Mint</title>
+  <title>Chat Test — Mint</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    html, body {
-      height: 100%;
-      width: 100%;
-      background-color: #FFFFFF;
-      font-family: sans-serif;
+    :root {
+      --bg:        #131B24;
+      --surface:   #1C2535;
+      --border:    rgba(255,255,255,0.1);
+      --text:      #ffffff;
+      --muted:     rgba(255,255,255,0.55);
+      --brand:     #0176D3;
+      --brand-hover: #014486;
     }
 
-    .nav {
-      padding: 2.5rem;
+    html, body {
+      min-height: 100%;
+      width: 100%;
+      background-color: var(--bg);
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+    }
+
+    /* ── Top nav bar ── */
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+      height: 56px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(19,27,36,0.85);
+      backdrop-filter: blur(8px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .topbar-left { display: flex; align-items: center; gap: 1.5rem; }
+    .topbar-logo {
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .topbar-logo span { color: #4ECDC4; }
+    .topbar-back {
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: color 0.15s;
+    }
+    .topbar-back:hover { color: var(--text); }
+
+    /* ── Hero section ── */
+    .hero {
       display: flex;
       flex-direction: column;
-      gap: 0.5rem;
+      align-items: center;
+      text-align: center;
+      padding: 5rem 1.5rem 3rem;
     }
-
-    .back-link {
-      display: inline-block;
-      color: #131B24;
-      font-size: 0.82rem;
-      text-decoration: none;
-      opacity: 0.4;
-      margin-bottom: 0.5rem;
-      transition: opacity 0.15s;
-    }
-
-    .back-link:hover { opacity: 0.8; }
-
-    .page-title {
-      color: #131B24;
-      font-size: 1.4rem;
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.75rem;
       font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #4ECDC4;
+      margin-bottom: 1.25rem;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #4ECDC4;
+    }
+    .hero-heading {
+      font-size: clamp(2rem, 5vw, 3.25rem);
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.5px;
+      max-width: 680px;
+      margin-bottom: 1rem;
+    }
+    .hero-heading em {
+      font-style: normal;
+      background: linear-gradient(135deg, #4ECDC4 0%, #0176D3 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-sub {
+      font-size: 1rem;
+      color: var(--muted);
+      max-width: 480px;
+      line-height: 1.6;
+      margin-bottom: 3rem;
     }
 
-    .page-subtitle {
-      color: #131B24;
-      font-size: 0.88rem;
-      opacity: 0.4;
-      margin-top: 0.3rem;
+    /* ── Chat widget container ── */
+    .chat-wrapper {
+      width: 100%;
+      max-width: 800px;
+      min-height: 560px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.4);
+    }
+
+    /* ── Footer ── */
+    .footer {
+      text-align: center;
+      padding: 3rem 1.5rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+      margin-top: 4rem;
     }
   </style>
 </head>
 <body>
 
-  <div class="nav">
-    <a class="back-link" href="index.html">← Back to home</a>
-    <h1 class="page-title">Chat Widget Test</h1>
-    <p class="page-subtitle">Salesforce Embedded Messaging deployment test page</p>
-  </div>
+  <!-- Top navigation -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <a class="topbar-logo" href="index.html">Mint <span>Help</span></a>
+      <a class="topbar-back" href="index.html">← Back to home</a>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <p class="hero-eyebrow">Powered by Agentforce</p>
+    <h1 class="hero-heading">How can <em>Agentforce</em> help?</h1>
+    <p class="hero-sub">Ask a question and get instant answers from our AI agent, or connect with a member of our support team.</p>
+
+    <!-- ══════════════════════════════════════════
+         Inline chat widget container
+    ══════════════════════════════════════════ -->
+    <div class="chat-wrapper" id="agent-chat"></div>
+  </section>
+
+  <footer class="footer">
+    © 2026 Mint Consulting (CRM) Limited. All rights reserved.
+  </footer>
 
   <!-- ══════════════════════════════════════════
-       Salesforce Embedded Messaging
-       Copy your deployment script here if you
-       want a different deployment on this page
+       Help Agent Accelerator — Step 3b Option 2
   ══════════════════════════════════════════ -->
-<div id="agent-chat"></div>
-
-<script src="InlineEnhancedChat.js"></script>
-<script>
-  try {
-    EnhancedChatInline.init({
-      containerId: 'agent-chat',
-      orgId: '00DUE0000079FGj',
-      deploymentApiName: 'Test_Messaging',
-      siteUrl: 'https://mint-consulting--mintuat.sandbox.my.site.com/ESWTestMessaging1778851875468',
-      scrt2Url: 'https://mint-consulting--mintuat.sandbox.my.salesforce-scrt.com',
-      bootstrapScriptUrl: 'https://mint-consulting--mintuat.sandbox.my.site.com/ESWTestMessaging1778851875468/assets/js/bootstrap.min.js',
-      heading: 'How can we help?',
-      placeholder: 'Type your question here...',
-      debug: true
-    });
-    console.log('EnhancedChatInline.init called successfully');
-  } catch (err) {
-    console.error('Init failed:', err);
-  }
-</script>
+  <script src="InlineEnhancedChat.js"></script>
+  <script>
+    try {
+      EnhancedChatInline.init({
+        containerId: 'agent-chat',
+        orgId: '00DUE0000079FGj',
+        deploymentApiName: 'Test_Messaging',
+        siteUrl: 'https://mint-consulting--mintuat.sandbox.my.site.com/ESWTestMessaging1778851875468',
+        scrt2Url: 'https://mint-consulting--mintuat.sandbox.my.salesforce-scrt.com',
+        bootstrapScriptUrl: 'https://mint-consulting--mintuat.sandbox.my.site.com/ESWTestMessaging1778851875468/assets/js/bootstrap.min.js',
+        heading: 'How can we help?',
+        placeholder: 'Type your question here...',
+        debug: true
+      });
+      console.log('EnhancedChatInline.init called successfully');
+    } catch (err) {
+      console.error('Init failed:', err);
+    }
+  </script>
 
 </body>
 </html>
