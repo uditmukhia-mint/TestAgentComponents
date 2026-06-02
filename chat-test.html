@@ -10,13 +10,15 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:        #131B24;
-      --surface:   #1C2535;
-      --border:    rgba(255,255,255,0.1);
-      --text:      #ffffff;
-      --muted:     rgba(255,255,255,0.55);
-      --brand:     #0176D3;
-      --brand-hover: #014486;
+      --bg:       #131B24;
+      --surface:  #1C2535;
+      --surface2: #243044;
+      --border:   rgba(255,255,255,0.1);
+      --text:     #ffffff;
+      --muted:    rgba(255,255,255,0.5);
+      --brand:    #0176D3;
+      --teal:     #4ECDC4;
+      --teal-dim: rgba(78,205,196,0.1);
     }
 
     html, body {
@@ -27,7 +29,7 @@
       color: var(--text);
     }
 
-    /* ── Top nav bar ── */
+    /* ── Top nav ── */
     .topbar {
       display: flex;
       align-items: center;
@@ -35,91 +37,210 @@
       padding: 0 2rem;
       height: 56px;
       border-bottom: 1px solid var(--border);
-      background: rgba(19,27,36,0.85);
+      background: rgba(19,27,36,0.9);
       backdrop-filter: blur(8px);
       position: sticky;
       top: 0;
       z-index: 100;
     }
-    .topbar-left { display: flex; align-items: center; gap: 1.5rem; }
     .topbar-logo {
-      font-size: 1rem;
-      font-weight: 700;
+      font-size: 1rem; font-weight: 700;
       letter-spacing: -0.3px;
-      color: var(--text);
-      text-decoration: none;
+      color: var(--text); text-decoration: none;
     }
-    .topbar-logo span { color: #4ECDC4; }
+    .topbar-logo span { color: var(--teal); }
     .topbar-back {
-      font-size: 0.8rem;
-      color: var(--muted);
+      font-size: 0.82rem; color: var(--muted);
       text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: 4px;
+      display: flex; align-items: center; gap: 4px;
       transition: color 0.15s;
     }
     .topbar-back:hover { color: var(--text); }
 
-    /* ── Hero section ── */
+    /* ── Hero ── */
     .hero {
       display: flex;
       flex-direction: column;
       align-items: center;
       text-align: center;
-      padding: 5rem 1.5rem 3rem;
+      padding: 5rem 1.5rem 4rem;
     }
     .hero-eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: #4ECDC4;
-      margin-bottom: 1.25rem;
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 0.72rem; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--teal); margin-bottom: 1.25rem;
     }
     .hero-eyebrow::before {
-      content: '';
-      display: inline-block;
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: #4ECDC4;
+      content: ''; width: 6px; height: 6px;
+      border-radius: 50%; background: var(--teal);
     }
     .hero-heading {
       font-size: clamp(2rem, 5vw, 3.25rem);
-      font-weight: 700;
-      line-height: 1.15;
+      font-weight: 700; line-height: 1.15;
       letter-spacing: -0.5px;
-      max-width: 680px;
-      margin-bottom: 1rem;
+      max-width: 680px; margin-bottom: 1rem;
     }
     .hero-heading em {
       font-style: normal;
-      background: linear-gradient(135deg, #4ECDC4 0%, #0176D3 100%);
+      background: linear-gradient(135deg, var(--teal) 0%, var(--brand) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
     .hero-sub {
-      font-size: 1rem;
-      color: var(--muted);
-      max-width: 480px;
-      line-height: 1.6;
+      font-size: 1rem; color: var(--muted);
+      max-width: 480px; line-height: 1.65;
       margin-bottom: 3rem;
     }
 
-    /* ── Chat widget container ── */
-    .chat-wrapper {
+    /* ── Chat card ── */
+    .chat-card {
       width: 100%;
       max-width: 800px;
-      min-height: 560px;
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 16px;
       overflow: hidden;
-      box-shadow: 0 24px 64px rgba(0,0,0,0.4);
+      box-shadow: 0 24px 64px rgba(0,0,0,0.45);
+    }
+
+    /* ══════════════════════════════════════════════
+       ACCELERATOR CSS OVERRIDES
+       ──────────────────────────────────────────────
+       The accelerator (InlineEnhancedChat.js) injects
+       its own <style> tag using class names prefixed
+       with .sfui- and CSS variables --sfui-*.
+
+       FIX — invisible text in input:
+         The accelerator sets .sfui-input { color:inherit }
+         which picks up our white body text. The input
+         background defaults to var(--sfui-surface,#fff)
+         so it was white text on white background.
+         Solution: set --sfui-surface to our dark colour
+         AND explicitly set .sfui-input { color } so it
+         always renders visibly regardless of inheritance.
+    ══════════════════════════════════════════════ */
+
+    /* 1 — CSS variable tokens on the container */
+    #agent-chat {
+      --sfui-surface:      #1C2535;   /* fixes invisible text */
+      --sfui-brand:        #4ECDC4;
+      --sfui-brand-hover:  #3ab8b0;
+      --sfui-border:       rgba(255,255,255,0.15);
+      --sfui-error:        #ff6b6b;
+    }
+
+    /* 2 — Prompt phase layout */
+    #agent-chat .sfui-prompt-phase {
+      padding: 2.5rem 2rem;
+      align-items: flex-start;
+    }
+    #agent-chat .sfui-search-card {
+      width: 100%;
+      max-width: 100%;
+      padding: 0;
+    }
+
+    /* 3 — Heading */
+    #agent-chat .sfui-heading {
+      color: #ffffff;
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(1.4rem, 2.5vw, 2rem);
+      font-weight: 700;
+      letter-spacing: -0.3px;
+    }
+
+    /* 4 — Input row container */
+    #agent-chat .sfui-input-row {
+      background: var(--surface2);
+      border: 1.5px solid rgba(255,255,255,0.15);
+      border-radius: 10px;
+      padding: 6px 8px;
+      box-shadow: none;
+    }
+    #agent-chat .sfui-input-row:focus-within {
+      border-color: #4ECDC4;
+      box-shadow: 0 0 0 3px rgba(78,205,196,0.2);
+    }
+
+    /* 5 — THE FIX: input text colour
+           !important needed because the accelerator's
+           own injected stylesheet also targets this
+           element with color:inherit */
+    #agent-chat .sfui-input {
+      color: #ffffff !important;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+      caret-color: #4ECDC4;
+    }
+    #agent-chat .sfui-input::placeholder {
+      color: rgba(255,255,255,0.38) !important;
+      opacity: 1;
+    }
+
+    /* 6 — Submit button */
+    #agent-chat .sfui-submit-btn {
+      background: #4ECDC4;
+      border-radius: 8px;
+    }
+    #agent-chat .sfui-submit-btn:hover  { background: #3ab8b0; }
+    #agent-chat .sfui-submit-btn:disabled { opacity: 0.25; }
+    #agent-chat .sfui-submit-btn svg { stroke: #131B24; }
+
+    /* 7 — Quick action prompt buttons */
+    #agent-chat .sfui-quick-action {
+      border-color: rgba(78,205,196,0.4);
+      color: #4ECDC4;
+      background: var(--teal-dim);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.8rem;
+    }
+    #agent-chat .sfui-quick-action:hover {
+      background: #4ECDC4;
+      color: #131B24;
+    }
+
+    /* 8 — Loading skeleton */
+    #agent-chat .sfui-loading {
+      background: var(--surface);
+      padding: 2.5rem 2rem;
+    }
+    #agent-chat .sfui-loading-heading {
+      color: #ffffff;
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(1.4rem, 2.5vw, 2rem);
+      font-weight: 700;
+    }
+    #agent-chat .sfui-skel-avatar {
+      background: rgba(255,255,255,0.1);
+    }
+    #agent-chat .sfui-skel-bar {
+      background: linear-gradient(
+        110deg,
+        rgba(255,255,255,0.06) 25%,
+        rgba(255,255,255,0.12) 50%,
+        rgba(255,255,255,0.06) 75%
+      );
+      background-size: 400% 100%;
+    }
+
+    /* 9 — Error state */
+    #agent-chat .sfui-error {
+      background: var(--surface);
+      color: #ff6b6b;
+    }
+    #agent-chat .sfui-retry-btn {
+      color: #4ECDC4;
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* 10 — Chat iframe wrapper transparent so the
+            Salesforce chat UI (cross-origin, cannot
+            be styled) floats on our dark surface */
+    #agent-chat .sfui-wrapper,
+    #agent-chat .sfui-chat-wrapper {
+      background: transparent;
     }
 
     /* ── Footer ── */
@@ -135,48 +256,39 @@
 </head>
 <body>
 
-  <!-- Top navigation -->
   <header class="topbar">
-    <div class="topbar-left">
-      <a class="topbar-logo" href="index.html">Mint <span>Help</span></a>
-      <a class="topbar-back" href="index.html">← Back to home</a>
-    </div>
+    <a class="topbar-logo" href="index.html">Mint <span>Help</span></a>
+    <a class="topbar-back" href="index.html">← Back to home</a>
   </header>
 
-  <!-- Hero -->
   <section class="hero">
     <p class="hero-eyebrow">Powered by Agentforce</p>
     <h1 class="hero-heading">How can <em>Agentforce</em> help?</h1>
-    <p class="hero-sub">Ask a question and get instant answers from our AI agent, or connect with a member of our support team.</p>
+    <p class="hero-sub">Ask a question and get instant answers from our AI agent, or connect with a member of our team.</p>
 
-    <!-- ══════════════════════════════════════════
-         Inline chat widget container
-    ══════════════════════════════════════════ -->
-    <div class="chat-wrapper" id="agent-chat"></div>
+    <div class="chat-card">
+      <div id="agent-chat"></div>
+    </div>
   </section>
 
   <footer class="footer">
     © 2026 Mint Consulting (CRM) Limited. All rights reserved.
   </footer>
 
-  <!-- ══════════════════════════════════════════
-       Help Agent Accelerator — Step 3b Option 2
-  ══════════════════════════════════════════ -->
   <script src="InlineEnhancedChat.js"></script>
   <script>
     try {
       EnhancedChatInline.init({
-        containerId: 'agent-chat',
-        orgId: '00DUE0000079FGj',
+        containerId:       'agent-chat',
+        orgId:             '00DUE0000079FGj',
         deploymentApiName: 'Test_Messaging',
-        siteUrl: 'https://mint-consulting--mintuat.sandbox.my.site.com/ESWTestMessaging1778851875468',
-        scrt2Url: 'https://mint-consulting--mintuat.sandbox.my.salesforce-scrt.com',
-        bootstrapScriptUrl: 'https://mint-consulting--mintuat.sandbox.my.site.com/ESWTestMessaging1778851875468/assets/js/bootstrap.min.js',
-        heading: 'How can we help?',
-        placeholder: 'Type your question here...',
-        debug: true
+        siteUrl:           'https://mint-consulting--mintuat.sandbox.my.site.com/ESWTestMessaging1778851875468',
+        scrt2Url:          'https://mint-consulting--mintuat.sandbox.my.salesforce-scrt.com',
+        bootstrapScriptUrl:'https://mint-consulting--mintuat.sandbox.my.site.com/ESWTestMessaging1778851875468/assets/js/bootstrap.min.js',
+        heading:           'How can we help?',
+        placeholder:       'Ask Mint Agentforce...',
+        debug:             false
       });
-      console.log('EnhancedChatInline.init called successfully');
     } catch (err) {
       console.error('Init failed:', err);
     }
